@@ -1,0 +1,1327 @@
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shri Ganesh Enterprises - Mobile Phones & Electronics Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'fade-in': 'fadeIn 0.3s ease-out',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .dark .glass-effect {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .loader {
+            border-top-color: #3b82f6;
+            -webkit-animation: spinner 1.5s linear infinite;
+            animation: spinner 1.5s linear infinite;
+        }
+        @keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .toast {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-300">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md shadow-sm transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-brand-700 rounded-full flex items-center justify-center text-white text-xl">
+                        <i class="fas fa-om"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold bg-gradient-to-r from-brand-600 to-brand-800 bg-clip-text text-transparent">Shri Ganesh Enterprises</h1>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Mobile Phones & Electronics</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition">Home</a>
+                    <a href="#products" class="nav-link text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition">Products</a>
+                    <a href="#about" class="nav-link text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition">About</a>
+                    <a href="#contact" class="nav-link text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition">Contact</a>
+                    <button onclick="toggleAdminModal()" class="text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400">
+                        <i class="fas fa-user-shield text-lg"></i>
+                    </button>
+                    <button onclick="toggleCart()" class="relative text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400">
+                        <i class="fas fa-shopping-cart text-lg"></i>
+                        <span id="cart-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+                    </button>
+                    <button onclick="toggleDarkMode()" class="text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:block"></i>
+                    </button>
+                    <a href="tel:+918521488400" class="bg-gradient-to-r from-brand-600 to-brand-700 text-white px-6 py-2 rounded-full font-medium hover:shadow-lg transform hover:-translate-y-0.5 transition">
+                        <i class="fas fa-phone mr-2"></i>Call Now
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center space-x-4">
+                    <button onclick="toggleCart()" class="relative text-gray-600 dark:text-gray-300">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span id="cart-badge-mobile" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+                    </button>
+                    <button onclick="toggleMobileMenu()" class="text-gray-600 dark:text-gray-300 focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white dark:bg-gray-800 border-t dark:border-gray-700">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <a href="#home" class="block px-3 py-2 text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-700 rounded-md">Home</a>
+                <a href="#products" class="block px-3 py-2 text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-700 rounded-md">Products</a>
+                <a href="#about" class="block px-3 py-2 text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-700 rounded-md">About</a>
+                <a href="#contact" class="block px-3 py-2 text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-700 rounded-md">Contact</a>
+                <a href="tel:+918521488400" class="block px-3 py-2 text-brand-600 dark:text-brand-400 font-medium">Call Now: +91 8521488400</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative pt-20 pb-16 md:pt-32 md:pb-24 overflow-hidden bg-gradient-to-br from-brand-600 via-brand-700 to-brand-900 dark:from-gray-900 dark:via-brand-900 dark:to-black">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-float"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-brand-400 rounded-full mix-blend-overlay filter blur-3xl animate-float-delayed"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="text-white space-y-6 animate-slide-up">
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-sm font-medium">
+                        <i class="fas fa-star text-yellow-300 mr-2"></i>
+                        Best Deals in Town
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-bold leading-tight">
+                        Best Electronics & <br/>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-400">Home Appliances</span>
+                    </h1>
+                    <p class="text-lg text-blue-100 max-w-lg">
+                        Buy TVs, Mobiles, ACs, Coolers, Fans,Bulb, Washing Machines, Refrigerators and more at affordable prices. Quality guaranteed!
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#products" class="bg-white text-brand-700 px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl transform hover:-translate-y-1 transition flex items-center">
+                            Shop Now <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                        <a href="https://wa.me/918521488400" target="_blank" class="bg-green-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl transform hover:-translate-y-1 transition flex items-center">
+                            <i class="fab fa-whatsapp mr-2 text-xl"></i> WhatsApp
+                        </a>
+                    </div>
+                    <div class="flex items-center space-x-6 pt-4 text-sm text-blue-100">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle mr-2 text-green-400"></i> Free Delivery
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle mr-2 text-green-400"></i> Best Prices
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle mr-2 text-green-400"></i> Warranty
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative hidden md:block">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-4 mt-8">
+                            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 animate-float border border-white/20">
+                                <img src="https://images.unsplash.com/photo-1593305841991-05c29736cec7?w=400&h=400&fit=crop" alt="Smart TV" class="w-full h-32 object-cover rounded-lg">
+                                <p class="text-white text-center mt-2 font-medium">Smart TVs</p>
+                            </div>
+                            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 animate-float-delayed border border-white/20">
+                                <img src="https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=400&h=400&fit=crop" alt="Refrigerator" class="w-full h-32 object-cover rounded-lg">
+                                <p class="text-white text-center mt-2 font-medium">Refrigerators</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 animate-float-delayed border border-white/20">
+                                <img src="https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=400&h=400&fit=crop" alt="AC" class="w-full h-32 object-cover rounded-lg">
+                                <p class="text-white text-center mt-2 font-medium">Air Conditioners</p>
+                            </div>
+                            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 animate-float border border-white/20">
+                                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop" alt="Mobile" class="w-full h-32 object-cover rounded-lg">
+                                <p class="text-white text-center mt-2 font-medium">Smartphones</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Bar -->
+    <div class="bg-white dark:bg-gray-800 shadow-md relative z-20 -mt-8 mx-4 md:mx-12 rounded-2xl grid grid-cols-2 md:grid-cols-4 gap-6 p-6">
+        <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-brand-600 dark:text-brand-400">
+                <i class="fas fa-truck text-xl"></i>
+            </div>
+            <div>
+                <h3 class="font-semibold dark:text-white">Free Delivery</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">On orders above ₹5000</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center text-green-600 dark:text-green-400">
+                <i class="fas fa-shield-alt text-xl"></i>
+            </div>
+            <div>
+                <h3 class="font-semibold dark:text-white">1 Year Warranty</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">On all products</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center text-purple-600 dark:text-purple-400">
+                <i class="fas fa-undo text-xl"></i>
+            </div>
+            <div>
+                <h3 class="font-semibold dark:text-white">Easy Returns</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">7 days return policy</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center text-orange-600 dark:text-orange-400">
+                <i class="fas fa-headset text-xl"></i>
+            </div>
+            <div>
+                <h3 class="font-semibold dark:text-white">24/7 Support</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Call us anytime</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Section (Visible only when logged in) -->
+    <section id="admin-section" class="hidden py-12 bg-gray-100 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-6 md:p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-white flex items-center">
+                        <i class="fas fa-cog mr-3 text-brand-600"></i>Product Management
+                    </h2>
+                    <button onclick="logoutAdmin()" class="text-red-500 hover:text-red-700 font-medium">
+                        <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                    </button>
+                </div>
+                
+                <form id="product-form" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <input type="hidden" id="product-id">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Product Name *</label>
+                        <input type="text" id="product-name" required class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-transparent" placeholder="e.g., Samsung 4K TV">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Price (₹) *</label>
+                        <input type="number" id="product-price" required min="0" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-transparent" placeholder="25000">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category *</label>
+                        <select id="product-category" required class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+                            <option value="">Select Category</option>
+                            <option value="TV">TV</option>
+                            <option value="Mobile">Mobile</option>
+                            <option value="AC">AC</option>
+                            <option value="Cooler">Cooler</option>
+                            <option value="Refrigerator">Refrigerator</option>
+                            <option value="Fan">Fan</option>
+                            <option value="Washing Machine">Washing Machine</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Brand</label>
+                        <input type="text" id="product-brand" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-transparent" placeholder="e.g., Samsung">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Stock Quantity *</label>
+                        <input type="number" id="product-stock" required min="0" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-transparent" placeholder="10">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Image URL</label>
+                        <input type="url" id="product-image" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-transparent" placeholder="https://example.com/image.jpg">
+                    </div>
+                    <div class="md:col-span-2 lg:col-span-3">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
+                        <textarea id="product-description" rows="3" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-transparent" placeholder="Product description..."></textarea>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" id="product-featured" class="w-5 h-5 text-brand-600 rounded focus:ring-brand-500">
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Featured Product</span>
+                        </label>
+                    </div>
+                </form>
+
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="saveProduct()" class="bg-brand-600 text-white px-6 py-2 rounded-lg hover:bg-brand-700 transition flex items-center">
+                        <i class="fas fa-plus mr-2"></i> Add Product
+                    </button>
+                    <button onclick="updateProduct()" class="bg-yellow-600 text-white px-6 py-2 rounded-lg hover:bg-yellow-700 transition flex items-center">
+                        <i class="fas fa-edit mr-2"></i> Update Product
+                    </button>
+                    <button onclick="resetForm()" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition flex items-center">
+                        <i class="fas fa-redo mr-2"></i> Reset Form
+                    </button>
+                    <button onclick="exportData()" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition flex items-center">
+                        <i class="fas fa-download mr-2"></i> Backup Data
+                    </button>
+                    <label class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition flex items-center cursor-pointer">
+                        <i class="fas fa-upload mr-2"></i> Restore Data
+                        <input type="file" id="import-file" class="hidden" accept=".json" onchange="importData(this)">
+                    </label>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-16 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">Our Products</h2>
+                <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Explore our wide range of premium electronics and home appliances at unbeatable prices.</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
+                <div class="grid md:grid-cols-4 gap-4">
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        <input type="text" id="search-input" oninput="filterProducts()" placeholder="Search products..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-brand-500">
+                    </div>
+                    <select id="category-filter" onchange="filterProducts()" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-brand-500">
+                        <option value="">All Categories</option>
+                        <option value="TV">TV</option>
+                        <option value="Mobile">Mobile</option>
+                        <option value="AC">AC</option>
+                        <option value="Cooler">Cooler</option>
+                        <option value="Refrigerator">Refrigerator</option>
+                        <option value="Fan">Fan</option>
+                        <option value="Washing Machine">Washing Machine</option>
+                    </select>
+                    <select id="sort-filter" onchange="filterProducts()" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-brand-500">
+                        <option value="newest">Latest First</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                    </select>
+                    <button onclick="document.getElementById('admin-modal').classList.remove('hidden')" class="md:hidden bg-brand-600 text-white px-4 py-2 rounded-lg">
+                        <i class="fas fa-lock mr-2"></i>Admin
+                    </button>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Products will be loaded here -->
+            </div>
+
+            <div id="no-products" class="hidden text-center py-12">
+                <i class="fas fa-box-open text-6xl text-gray-300 dark:text-gray-600 mb-4"></i>
+                <p class="text-gray-500 dark:text-gray-400 text-lg">No products found</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop" alt="Store" class="rounded-2xl shadow-2xl">
+                    <div class="absolute -bottom-6 -right-6 bg-brand-600 text-white p-6 rounded-2xl shadow-xl hidden md:block">
+                        <p class="text-3xl font-bold">10+</p>
+                        <p class="text-sm">Years Experience</p>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-6">About Shri Ganesh Enterprises</h2>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                        Welcome to Shri Ganesh Enterprises, your trusted destination for premium electronics and home appliances in the city. Established with a vision to provide quality products at affordable prices, we have been serving our customers with dedication and integrity.
+                    </p>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-brand-600 mt-1 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold dark:text-white">Quality Assurance</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">All products come with manufacturer warranty and our quality guarantee.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-brand-600 mt-1 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold dark:text-white">Competitive Pricing</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Best prices guaranteed with regular discounts and offers.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-brand-600 mt-1 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold dark:text-white">After-Sales Support</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Dedicated customer service and technical support.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#contact" class="inline-flex items-center text-brand-600 dark:text-brand-400 font-semibold hover:underline">
+                        Contact Us <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">Contact Us</h2>
+                <p class="text-gray-600 dark:text-gray-400">Visit our store or get in touch with us</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6">Get In Touch</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-brand-100 dark:bg-brand-900 rounded-full flex items-center justify-center text-brand-600 dark:text-brand-400 flex-shrink-0">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold dark:text-white">Phone</h4>
+                                <p class="text-gray-600 dark:text-gray-300">+91 8521488400</p>
+                                <p class="text-sm text-gray-500">Mon-Sat: 9AM - 9PM</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-brand-100 dark:bg-brand-900 rounded-full flex items-center justify-center text-brand-600 dark:text-brand-400 flex-shrink-0">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold dark:text-white">Email</h4>
+                                <p class="text-gray-600 dark:text-gray-300">shriganesh763q@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-brand-100 dark:bg-brand-900 rounded-full flex items-center justify-center text-brand-600 dark:text-brand-400 flex-shrink-0">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold dark:text-white">Address</h4>
+                                <p class="text-gray-600 dark:text-gray-300">Ward no 05 Gwalpara near shivala road gwalpara <br/>Gawalpara Bihar 852115</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8">
+                        <h4 class="font-semibold dark:text-white mb-4">Follow Us</h4>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-brand-600 hover:text-white transition">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-brand-600 hover:text-white transition">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-brand-600 hover:text-white transition">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6">Send Message</h3>
+                    <form onsubmit="handleContactSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Your Name</label>
+                            <input type="text" required class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-brand-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Phone Number</label>
+                            <input type="tel" required class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-brand-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Message</label>
+                            <textarea rows="4" required class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-brand-500"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-brand-600 text-white py-3 rounded-lg font-semibold hover:bg-brand-700 transition">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Map -->
+            <div class="mt-8 rounded-2xl overflow-hidden shadow-lg h-96 bg-gray-200 dark:bg-gray-700">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3500!2d77.0!3d28.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDAwJzAwLjAiTiA3N8KwMDAnMDAuMCJF!5e0!3m2!1sen!2sin!4v1" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-10 h-10 bg-brand-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-om text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Shri Ganesh Enterprises</h3>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Your trusted partner for all electronics and home appliance needs. Quality products, unbeatable prices.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#home" class="hover:text-white transition">Home</a></li>
+                        <li><a href="#products" class="hover:text-white transition">Products</a></li>
+                        <li><a href="#about" class="hover:text-white transition">About Us</a></li>
+                        <li><a href="#contact" class="hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Categories</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-white transition">Televisions</a></li>
+                        <li><a href="#" class="hover:text-white transition">Air Conditioners</a></li>
+                        <li><a href="#" class="hover:text-white transition">Refrigerators</a></li>
+                        <li><a href="#" class="hover:text-white transition">Mobile Phones</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Newsletter</h4>
+                    <p class="text-gray-400 text-sm mb-4">Subscribe for latest offers and updates.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="flex-1 px-4 py-2 rounded-l-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-brand-500">
+                        <button class="bg-brand-600 px-4 py-2 rounded-r-lg hover:bg-brand-700 transition">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">&copy; 2024 Shri Ganesh Enterprises. All rights reserved.</p>
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="toggleCart()"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white dark:bg-gray-800 shadow-2xl transform transition-transform duration-300 translate-x-full" id="cart-panel">
+            <div class="flex flex-col h-full">
+                <div class="flex justify-between items-center p-6 border-b dark:border-gray-700">
+                    <h2 class="text-xl font-bold dark:text-white flex items-center">
+                        <i class="fas fa-shopping-cart mr-2 text-brand-600"></i> Shopping Cart
+                    </h2>
+                    <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                
+                <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <!-- Cart items will be loaded here -->
+                </div>
+
+                <div class="p-6 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-lg font-semibold dark:text-white">Total:</span>
+                        <span id="cart-total" class="text-2xl font-bold text-brand-600">₹0</span>
+                    </div>
+                    <button onclick="checkoutWhatsApp()" class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition flex items-center justify-center mb-2">
+                        <i class="fab fa-whatsapp mr-2"></i> Order on WhatsApp
+                    </button>
+                    <button onclick="clearCart()" class="w-full bg-red-500 text-white py-2 rounded-lg font-medium hover:bg-red-600 transition text-sm">
+                        Clear Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="admin-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleAdminModal()"></div>
+        <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 w-full max-w-md animate-fade-in">
+            <button onclick="toggleAdminModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-brand-100 dark:bg-brand-900 rounded-full flex items-center justify-center text-brand-600 dark:text-brand-400 mx-auto mb-4">
+                    <i class="fas fa-lock text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold dark:text-white">Admin Login</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Enter password to manage products</p>
+            </div>
+            <form onsubmit="handleAdminLogin(event)">
+                <div class="mb-4">
+                    <input type="password" id="admin-password" placeholder="Enter password" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-brand-500">
+                    <p class="text-xs text-gray-500 mt-1">Default: admin123</p>
+                </div>
+                <button type="submit" class="w-full bg-brand-600 text-white py-3 rounded-lg font-semibold hover:bg-brand-700 transition">
+                    Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeProductModal()"></div>
+        <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto animate-fade-in">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 w-10 h-10 bg-white/80 dark:bg-gray-700/80 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-200 hover:bg-white dark:hover:bg-gray-600 transition">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="product-modal-content" class="grid md:grid-cols-2">
+                <!-- Content loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/918521488400" target="_blank" class="fixed bottom-6 left-6 z-40 bg-green-500 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl hover:scale-110 transition-transform animate-bounce">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Back to Top -->
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" id="back-to-top" class="fixed bottom-6 right-6 z-40 bg-brand-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-brand-700 transition opacity-0 pointer-events-none">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Data Management
+        let products = JSON.parse(localStorage.getItem('sge_products')) || [
+            {
+                id: 1,
+                name: "Samsung 43 inch Smart TV",
+                price: 28999,
+                category: "TV",
+                brand: "Samsung",
+                stock: 15,
+                image: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=400&h=400&fit=crop",
+                description: "Crystal 4K UHD Smart TV with HDR and Voice Assistant",
+                rating: 4.5,
+                featured: true,
+                createdAt: Date.now()
+            },
+            {
+                id: 2,
+                name: "LG Double Door Refrigerator",
+                price: 35999,
+                category: "Refrigerator",
+                brand: "LG",
+                stock: 8,
+                image: "https://images.unsplash.com/photo-1571175443880-49e1d58b794a?w=400&h=400&fit=crop",
+                description: "260L Frost Free Double Door with Smart Inverter",
+                rating: 4.3,
+                featured: false,
+                createdAt: Date.now() - 1000
+            },
+            {
+                id: 3,
+                name: "iPhone 15 Pro",
+                price: 129900,
+                category: "Mobile",
+                brand: "Apple",
+                stock: 5,
+                image: "https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop",
+                description: "Latest iPhone with Titanium design and A17 Pro chip",
+                rating: 4.8,
+                featured: true,
+                createdAt: Date.now() - 2000
+            },
+            {
+                id: 4,
+                name: "Blue Star 1.5 Ton AC",
+                price: 42999,
+                category: "AC",
+                brand: "Blue Star",
+                stock: 12,
+                image: "https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=400&h=400&fit=crop",
+                description: "5 Star Inverter Split AC with Copper Condenser",
+                rating: 4.4,
+                featured: false,
+                createdAt: Date.now() - 3000
+            },
+            {
+                id: 5,
+                name: "Samsung Washing Machine",
+                price: 18500,
+                category: "Washing Machine",
+                brand: "Samsung",
+                stock: 20,
+                image: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=400&h=400&fit=crop",
+                description: "7kg Fully Automatic Front Load with Eco Bubble",
+                rating: 4.2,
+                featured: false,
+                createdAt: Date.now() - 4000
+            },
+            {
+                id: 6,
+                name: "Crompton High Speed Fan",
+                price: 2499,
+                category: "Fan",
+                brand: "Crompton",
+                stock: 50,
+                image: "https://images.unsplash.com/photo-1563456023780-1fae989dd6f6?w=400&h=400&fit=crop",
+                description: "1200mm High Speed Ceiling Fan with Double Ball Bearing",
+                rating: 4.0,
+                featured: false,
+                createdAt: Date.now() - 5000
+            }
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('sge_cart')) || [];
+        let wishlist = JSON.parse(localStorage.getItem('sge_wishlist')) || [];
+        let isAdminLoggedIn = sessionStorage.getItem('sge_admin') === 'true';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCartUI();
+            checkDarkMode();
+            
+            // Scroll listener for navbar and back-to-top
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                const backToTop = document.getElementById('back-to-top');
+                
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-md');
+                } else {
+                    navbar.classList.remove('shadow-md');
+                }
+                
+                if (window.scrollY > 500) {
+                    backToTop.classList.remove('opacity-0', 'pointer-events-none');
+                } else {
+                    backToTop.classList.add('opacity-0', 'pointer-events-none');
+                }
+            });
+        });
+
+        // Dark Mode
+        function checkDarkMode() {
+            if (localStorage.getItem('sge_darkmode') === 'true' || 
+                (!localStorage.getItem('sge_darkmode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            }
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('sge_darkmode', document.documentElement.classList.contains('dark'));
+        }
+
+        // Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Admin Functions
+        function toggleAdminModal() {
+            if (isAdminLoggedIn) {
+                document.getElementById('admin-section').classList.toggle('hidden');
+                document.getElementById('admin-section').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                document.getElementById('admin-modal').classList.toggle('hidden');
+            }
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const password = document.getElementById('admin-password').value;
+            if (password === 'change123') {
+                isAdminLoggedIn = true;
+                sessionStorage.setItem('sge_admin', 'true');
+                document.getElementById('admin-modal').classList.add('hidden');
+                document.getElementById('admin-section').classList.remove('hidden');
+                document.getElementById('admin-section').scrollIntoView({ behavior: 'smooth' });
+                showToast('Admin login successful!', 'success');
+                renderProducts(); // Re-render to show admin controls
+            } else {
+                showToast('Invalid password!', 'error');
+            }
+        }
+
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            sessionStorage.removeItem('sge_admin');
+            document.getElementById('admin-section').classList.add('hidden');
+            showToast('Logged out successfully', 'success');
+            renderProducts();
+        }
+
+        // Product CRUD
+        function saveProduct() {
+            const name = document.getElementById('product-name').value;
+            const price = parseFloat(document.getElementById('product-price').value);
+            const category = document.getElementById('product-category').value;
+            const brand = document.getElementById('product-brand').value;
+            const stock = parseInt(document.getElementById('product-stock').value);
+            const image = document.getElementById('product-image').value || 'https://via.placeholder.com/400';
+            const description = document.getElementById('product-description').value;
+            const featured = document.getElementById('product-featured').checked;
+
+            if (!name || !price || !category || !stock) {
+                showToast('Please fill all required fields', 'error');
+                return;
+            }
+
+            const newProduct = {
+                id: Date.now(),
+                name, price, category, brand, stock, image, description, featured,
+                rating: 4.0,
+                createdAt: Date.now()
+            };
+
+            products.push(newProduct);
+            saveToLocalStorage();
+            renderProducts();
+            resetForm();
+            showToast('Product added successfully!', 'success');
+        }
+
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            document.getElementById('product-id').value = product.id;
+            document.getElementById('product-name').value = product.name;
+            document.getElementById('product-price').value = product.price;
+            document.getElementById('product-category').value = product.category;
+            document.getElementById('product-brand').value = product.brand || '';
+            document.getElementById('product-stock').value = product.stock;
+            document.getElementById('product-image').value = product.image;
+            document.getElementById('product-description').value = product.description || '';
+            document.getElementById('product-featured').checked = product.featured || false;
+
+            document.getElementById('admin-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function updateProduct() {
+            const id = parseInt(document.getElementById('product-id').value);
+            if (!id) {
+                showToast('Please select a product to update', 'error');
+                return;
+            }
+
+            const index = products.findIndex(p => p.id === id);
+            if (index === -1) return;
+
+            products[index] = {
+                ...products[index],
+                name: document.getElementById('product-name').value,
+                price: parseFloat(document.getElementById('product-price').value),
+                category: document.getElementById('product-category').value,
+                brand: document.getElementById('product-brand').value,
+                stock: parseInt(document.getElementById('product-stock').value),
+                image: document.getElementById('product-image').value || products[index].image,
+                description: document.getElementById('product-description').value,
+                featured: document.getElementById('product-featured').checked
+            };
+
+            saveToLocalStorage();
+            renderProducts();
+            resetForm();
+            showToast('Product updated successfully!', 'success');
+        }
+
+        function deleteProduct(id) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+            products = products.filter(p => p.id !== id);
+            saveToLocalStorage();
+            renderProducts();
+            showToast('Product deleted successfully!', 'success');
+        }
+
+        function resetForm() {
+            document.getElementById('product-form').reset();
+            document.getElementById('product-id').value = '';
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('sge_products', JSON.stringify(products));
+        }
+
+        function exportData() {
+            const dataStr = JSON.stringify(products, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `sge_backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            showToast('Data exported successfully!', 'success');
+        }
+
+        function importData(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (Array.isArray(data)) {
+                        products = data;
+                        saveToLocalStorage();
+                        renderProducts();
+                        showToast('Data restored successfully!', 'success');
+                    } else {
+                        throw new Error('Invalid format');
+                    }
+                } catch (err) {
+                    showToast('Error importing data!', 'error');
+                }
+            };
+            reader.readAsText(file);
+            input.value = '';
+        }
+
+        // Render Products
+        function renderProducts(productsToRender = null) {
+            const grid = document.getElementById('products-grid');
+            const noProducts = document.getElementById('no-products');
+            const data = productsToRender || filterProductsData();
+
+            if (data.length === 0) {
+                grid.innerHTML = '';
+                noProducts.classList.remove('hidden');
+                return;
+            }
+
+            noProducts.classList.add('hidden');
+            grid.innerHTML = data.map(product => `
+                <div class="product-card bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group">
+                    <div class="relative overflow-hidden h-64 bg-gray-100 dark:bg-gray-700">
+                        <img src="${product.image}" alt="${product.name}" class="product-image w-full h-full object-cover transition-transform duration-500" loading="lazy">
+                        ${product.featured ? '<span class="absolute top-3 left-3 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full">FEATURED</span>' : ''}
+                        ${product.stock < 5 ? '<span class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">LOW STOCK</span>' : ''}
+                        
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-3">
+                            <button onclick="openProductModal(${product.id})" class="w-10 h-10 bg-white text-gray-800 rounded-full flex items-center justify-center hover:bg-brand-600 hover:text-white transition transform hover:scale-110" title="Quick View">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="toggleWishlist(${product.id})" class="w-10 h-10 bg-white ${wishlist.includes(product.id) ? 'text-red-500' : 'text-gray-800'} rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition transform hover:scale-110" title="Add to Wishlist">
+                                <i class="${wishlist.includes(product.id) ? 'fas' : 'far'} fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-5">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-xs font-semibold text-brand-600 dark:text-brand-400 uppercase tracking-wider">${product.category}</span>
+                            <div class="flex items-center text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <span class="text-gray-600 dark:text-gray-400 ml-1 text-xs">${product.rating}</span>
+                            </div>
+                        </div>
+                        
+                        <h3 class="font-bold text-gray-800 dark:text-white mb-2 line-clamp-2 h-12">${product.name}</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm mb-3 line-clamp-2">${product.description || ''}</p>
+                        
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <span class="text-2xl font-bold text-brand-600 dark:text-brand-400">₹${product.price.toLocaleString()}</span>
+                                ${product.stock > 0 ? `<span class="text-xs text-green-600 dark:text-green-400 block">In Stock (${product.stock})</span>` : '<span class="text-xs text-red-500 block">Out of Stock</span>'}
+                            </div>
+                            ${isAdminLoggedIn ? `
+                                <div class="flex space-x-2">
+                                    <button onclick="editProduct(${product.id})" class="w-8 h-8 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center hover:bg-yellow-500 hover:text-white transition" title="Edit">
+                                        <i class="fas fa-edit text-xs"></i>
+                                    </button>
+                                    <button onclick="deleteProduct(${product.id})" class="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition" title="Delete">
+                                        <i class="fas fa-trash text-xs"></i>
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        <button onclick="addToCart(${product.id})" ${product.stock === 0 ? 'disabled' : ''} 
+                            class="w-full ${product.stock === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-brand-600 hover:bg-brand-700'} text-white py-3 rounded-xl font-semibold transition flex items-center justify-center space-x-2 group-hover:shadow-lg">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>${product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterProductsData() {
+            const search = document.getElementById('search-input').value.toLowerCase();
+            const category = document.getElementById('category-filter').value;
+            const sort = document.getElementById('sort-filter').value;
+
+            let filtered = products.filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(search) || 
+                                    (p.description && p.description.toLowerCase().includes(search)) ||
+                                    (p.brand && p.brand.toLowerCase().includes(search));
+                const matchesCategory = !category || p.category === category;
+                return matchesSearch && matchesCategory;
+            });
+
+            // Sort
+            if (sort === 'price-low') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (sort === 'price-high') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else if (sort === 'newest') {
+                filtered.sort((a, b) => b.createdAt - a.createdAt);
+            }
+
+            return filtered;
+        }
+
+        function filterProducts() {
+            renderProducts();
+        }
+
+        // Cart Functions
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product || product.stock === 0) return;
+
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                if (existingItem.quantity < product.stock) {
+                    existingItem.quantity++;
+                } else {
+                    showToast('Maximum stock reached!', 'error');
+                    return;
+                }
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1
+                });
+            }
+
+            localStorage.setItem('sge_cart', JSON.stringify(cart));
+            updateCartUI();
+            showToast('Added to cart!', 'success');
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            localStorage.setItem('sge_cart', JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        function updateQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            const product = products.find(p => p.id === productId);
+            
+            if (item) {
+                const newQuantity = item.quantity + change;
+                if (newQuantity > 0 && newQuantity <= product.stock) {
+                    item.quantity = newQuantity;
+                    localStorage.setItem('sge_cart', JSON.stringify(cart));
+                    updateCartUI();
+                } else if (newQuantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    showToast('Maximum stock reached!', 'error');
+                }
+            }
+        }
+
+        function clearCart() {
+            if (cart.length === 0) return;
+            if (confirm('Clear all items from cart?')) {
+                cart = [];
+                localStorage.setItem('sge_cart', JSON.stringify(cart));
+                updateCartUI();
+                showToast('Cart cleared', 'success');
+            }
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const badgeMobile = document.getElementById('cart-badge-mobile');
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            // Update badges
+            if (totalItems > 0) {
+                badge.textContent = totalItems;
+                badge.classList.remove('hidden');
+                badgeMobile.textContent = totalItems;
+                badgeMobile.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+                badgeMobile.classList.add('hidden');
+            }
+
+            // Update cart items display
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-full text-gray-400">
+                        <i class="fas fa-shopping-cart text-6xl mb-4 opacity-20"></i>
+                        <p>Your cart is empty</p>
+                    </div>
+                `;
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="flex space-x-4 bg-gray-50 dark:bg-gray-700 p-4 rounded-xl">
+                        <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg">
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-gray-800 dark:text-white line-clamp-1">${item.name}</h4>
+                            <p class="text-brand-600 dark:text-brand-400 font-bold">₹${(item.price * item.quantity).toLocaleString()}</p>
+                            <div class="flex items-center mt-2 space-x-2">
+                                <button onclick="updateQuantity(${item.id}, -1)" class="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-brand-600 hover:text-white transition">
+                                    <i class="fas fa-minus text-xs"></i>
+                                </button>
+                                <span class="font-medium dark:text-white w-8 text-center">${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.id}, 1)" class="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-brand-600 hover:text-white transition">
+                                    <i class="fas fa-plus text-xs"></i>
+                                </button>
+                                <button onclick="removeFromCart(${item.id})" class="ml-auto text-red-500 hover:text-red-700">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            cartTotal.textContent = '₹' + totalPrice.toLocaleString();
+        }
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const panel = document.getElementById('cart-panel');
+            
+            if (sidebar.classList.contains('hidden')) {
+                sidebar.classList.remove('hidden');
+                setTimeout(() => {
+                    panel.classList.remove('translate-x-full');
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            } else {
+                panel.classList.add('translate-x-full');
+                setTimeout(() => {
+                    sidebar.classList.add('hidden');
+                }, 300);
+                document.body.style.overflow = '';
+            }
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) {
+                showToast('Cart is empty!', 'error');
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            let message = `Hello Shri Ganesh Enterprises,\n\nI would like to order:\n`;
+            cart.forEach(item => {
+                message += `\n• ${item.name} x${item.quantity} - ₹${(item.price * item.quantity).toLocaleString()}`;
+            });
+            message += `\n\nTotal: ₹${total.toLocaleString()}\n\nPlease confirm my order.`;
+            
+            const encoded = encodeURIComponent(message);
+            window.open(`https://wa.me/918521488400?text=${encoded}`, '_blank');
+        }
+
+        // Wishlist
+        function toggleWishlist(productId) {
+            const index = wishlist.indexOf(productId);
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                showToast('Removed from wishlist', 'success');
+            } else {
+                wishlist.push(productId);
+                showToast('Added to wishlist!', 'success');
+            }
+            localStorage.setItem('sge_wishlist', JSON.stringify(wishlist));
+            renderProducts();
+        }
+
+        // Product Modal
+        function openProductModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const modal = document.getElementById('product-modal');
+            const content = document.getElementById('product-modal-content');
+            
+            content.innerHTML = `
+                <div class="h-64 md:h-auto bg-gray-100 dark:bg-gray-700">
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
+                </div>
+                <div class="p-8">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <span class="text-sm font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wider">${product.category}</span>
+                            <h2 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">${product.name}</h2>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-3xl font-bold text-brand-600 dark:text-brand-400">₹${product.price.toLocaleString()}</p>
+                            <div class="flex items-center justify-end text-yellow-400 mt-1">
+                                ${Array(5).fill(0).map((_, i) => `<i class="${i < Math.floor(product.rating) ? 'fas' : 'far'} fa-star"></i>`).join('')}
+                                <span class="text-gray-500 dark:text-gray-400 ml-2 text-sm">(${product.rating})</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-300">
+                            <span class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> In Stock: ${product.stock}</span>
+                            ${product.brand ? `<span class="flex items-center"><i class="fas fa-tag text-brand-500 mr-2"></i> Brand: ${product.brand}</span>` : ''}
+                        </div>
+                        
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">${product.description || 'No description available.'}</p>
+                    </div>
+                    
+                    <div class="flex space-x-4">
+                        <button onclick="addToCart(${product.id}); closeProductModal();" class="flex-1 bg-brand-600 text-white py-3 rounded-xl font-semibold hover:bg-brand-700 transition flex items-center justify-center space-x-2">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Add to Cart</span>
+                        </button>
+                        <button onclick="toggleWishlist(${product.id})" class="w-14 h-12 border-2 border-gray-300 dark:border-gray-600 rounded-xl flex items-center justify-center text-gray-600 dark:text-gray-300 hover:border-red-500 hover:text-red-500 transition ${wishlist.includes(product.id) ? 'border-red-500 text-red-500' : ''}">
+                            <i class="${wishlist.includes(product.id) ? 'fas' : 'far'} fa-heart text-xl"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="mt-6 pt-6 border-t dark:border-gray-700">
+                        <h4 class="font-semibold text-gray-800 dark:text-white mb-2">Features:</h4>
+                        <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 1 Year Warranty</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Free Installation</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Cash on Delivery Available</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Contact Form
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            showToast('Message sent successfully! We will contact you soon.', 'success');
+            e.target.reset();
+        }
+
+        // Toast Notification
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const colors = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+            const icon = type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle';
+            
+            toast.className = `toast ${colors} text-white px-6 py-4 rounded-xl shadow-2xl flex items-center space-x-3 min-w-[300px]`;
+            toast.innerHTML = `
+                <i class="fas fa-${icon} text-xl"></i>
+                <span class="font-medium">${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
